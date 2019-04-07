@@ -14,7 +14,84 @@
 
 <body>
 
+    <div class="container">
+        <div class="row py-5 mb-3 text-center text-white bg-primary rounded">
+            <div class="col-12">
+                <div class="display-4 mb-2">Anytime is Train Time</div>
+                <p>Choo Choo. Chee Chee.</p>
+            </div>
+        </div>
 
+        <div class="row mb-3" id="train-schedule">
+            <div class="col-12">
+                <div class="card">
+                    <h5 class="card-header text-white bg-primary">Current Train Schedule</h5>
+                    <div class="card-body">
+                        <table class="table table-striped text-center">
+                            <thead class="font-weight-bold">
+                                <tr>
+                                    <th scope="col">Train Name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Frequency (min)</th>
+                                    <th scope="col">Next Arrival</th>
+                                    <th scope="col">Minutes Away</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-schedule">
+                                <tr>
+                                    <th scope="row">Orange Line</th>
+                                    <td>Trenton, NJ</td>
+                                    <td>30</td>
+                                    <td>3:15 PM</td>
+                                    <td>500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End train-schedule -->
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card">
+                    <h5 class="card-header text-white bg-primary">Add a Train</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-5">
+                                    <label for="form-train-name">Train Name</label>
+                                    <input type="text" class="form-control" id="form-train-name"
+                                        placeholder="Train Name">
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label for="form-city">City</label>
+                                    <input type="text" class="form-control" id="form-city" placeholder="City">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="form-state">State</label>
+                                    <input type="text" class="form-control" id="form-state" placeholder="ST">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="form-time">First Train Time (HH:mm)</label>
+                                    <input type="text" class="form-control" id="form-time"
+                                        placeholder="00:00 - military time">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="form-frequency">Frequency</label>
+                                    <input type="text" class="form-control" id="form-frequency"
+                                        placeholder="Frequency">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="form-submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End form -->
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -26,6 +103,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <!-- Firebase JavaScript Link -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 
