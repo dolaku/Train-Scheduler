@@ -25,7 +25,24 @@ $(document).ready(function () {
         data = snapshot.val();
         console.log(data);
 
-        
+        // if (
+        //     snapshot.child("fb_trainName").exists() 
+        //     && snapshot.child("fb_city").exists()
+        //     && snapshot.child("fb_state").exists()
+        //     && snapshot.child("fb_frequency").exists()
+        //     && snapshot.child("fb_timeArriving").exists()
+        //     ) {
+                $('#table-schedule').append(`
+                    <tr>
+                        <th scope="row">${data.trainName}</th>
+                        <td>${data.city}, ${data.state}</td>
+                        <td>${data.frequency}</td>
+                        <td>${data.timeArriving}</td>
+                        <td>??? mins away</td>
+                    </tr>
+                `)
+        // }
+        console.log(data.trainName);
     });
 
     // Listener on form submit
@@ -40,11 +57,11 @@ $(document).ready(function () {
 
         // Save the new train details in Firebase
         database.ref().set({
-            fb_TrainName: trainName,
-            fb_frequency: frequency,
-            fb_city: city,
-            fb_state: state,
-            fb_timeArriving: timeArriving,
+            trainName: trainName,
+            frequency: frequency,
+            city: city,
+            state: state,
+            timeArriving: timeArriving,
         });
 
         $('#table-schedule').append(`
