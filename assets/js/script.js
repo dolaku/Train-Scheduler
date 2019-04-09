@@ -13,6 +13,7 @@ $(document).ready(function () {
 
     var database = firebase.database();
     var data;
+    var trainCount = 0;
     var trainName;
     var city;
     var state;
@@ -21,33 +22,38 @@ $(document).ready(function () {
 
     // At the page load and subsequent value changes, get a snapshot of the local data.
     // This function allows you to update your page in real-time when the values within the firebase node bidderData changes
-    database.ref().on("value", function (snapshot) {
-        data = snapshot.val();
-        console.log(data);
+    
+    for (var i = 0; i <= 10; i++) {
+        database.ref('/trainData' + i).on("value", function (snapshot) {
+            data = snapshot.val();
+            console.log(data);
+    
+            // if (
+            //     snapshot.child("trainName").exists() 
+            //     && snapshot.child("city").exists()
+            //     && snapshot.child("state").exists()
+            //     && snapshot.child("frequency").exists()
+            //     && snapshot.child("timeArriving").exists()
+            //     ) {
+                    $('#table-schedule').append(`
+                        <tr>
+                            <th scope="row">${data.trainName}</th>
+                            <td>${data.city}, ${data.state}</td>
+                            <td>${data.frequency}</td>
+                            <td>${data.timeArriving}</td>
+                            <td>??? mins away</td>
+                        </tr>
+                    `)
+            // }
 
-        // if (
-        //     snapshot.child("fb_trainName").exists() 
-        //     && snapshot.child("fb_city").exists()
-        //     && snapshot.child("fb_state").exists()
-        //     && snapshot.child("fb_frequency").exists()
-        //     && snapshot.child("fb_timeArriving").exists()
-        //     ) {
-                $('#table-schedule').append(`
-                    <tr>
-                        <th scope="row">${data.trainName}</th>
-                        <td>${data.city}, ${data.state}</td>
-                        <td>${data.frequency}</td>
-                        <td>${data.timeArriving}</td>
-                        <td>??? mins away</td>
-                    </tr>
-                `)
-        // }
-        console.log(data.trainName);
-    });
+        });
+    }
 
     // Listener on form submit
     $('#form-submit').on('click', function (event) {
         event.preventDefault();
+
+        trainCount++;
 
         trainName = $('#form-train-name').val().trim();
         frequency = $('#form-frequency').val().trim();
@@ -56,7 +62,8 @@ $(document).ready(function () {
         timeArriving = $('#form-time').val().trim();
 
         // Save the new train details in Firebase
-        database.ref().set({
+        database.ref('/trainData' + trainCount).set({
+            trainCount: trainCount,
             trainName: trainName,
             frequency: frequency,
             city: city,
