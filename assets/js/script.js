@@ -12,74 +12,52 @@ $(document).ready(function () {
     firebase.initializeApp(config);
 
     var database = firebase.database();
-    var data;
-    var trainCount = 0;
-    var trainName;
-    var city;
-    var state;
-    var frequency;
-    var timeArriving;
 
     // At the page load and subsequent value changes, get a snapshot of the local data.
     // This function allows you to update your page in real-time when the values within the firebase node bidderData changes
-    
-    for (var i = 0; i <= 10; i++) {
-        database.ref('/trainData' + i).on("value", function (snapshot) {
-            data = snapshot.val();
-            console.log(data);
-    
-            // if (
-            //     snapshot.child("trainName").exists() 
-            //     && snapshot.child("city").exists()
-            //     && snapshot.child("state").exists()
-            //     && snapshot.child("frequency").exists()
-            //     && snapshot.child("timeArriving").exists()
-            //     ) {
-                    $('#table-schedule').append(`
-                        <tr>
-                            <th scope="row">${data.trainName}</th>
-                            <td>${data.city}, ${data.state}</td>
-                            <td>${data.frequency}</td>
-                            <td>${data.timeArriving}</td>
-                            <td>??? mins away</td>
-                        </tr>
-                    `)
-            // }
+    database.ref().on("child_added", function (snapshot) {
+        var data = snapshot.val();
+        console.log(data);
 
-        });
-    }
+        // add a new table row
+        $('#table-schedule').append(`
+            <tr>
+                <th scope="row">${data.trainName}</th>
+                <td>${data.city}, ${data.state}</td>
+                <td>${data.frequency}</td>
+                <td>${data.firstArrival}</td>
+                <td>??? mins away</td>
+            </tr>
+        `)
+        console.log(data.trainName);
+    });
 
     // Listener on form submit
     $('#form-submit').on('click', function (event) {
+        // stops page from refreshing
         event.preventDefault();
 
-        trainCount++;
-
-        trainName = $('#form-train-name').val().trim();
-        frequency = $('#form-frequency').val().trim();
-        city = $('#form-city').val().trim();
-        state = $('#form-state').val().trim();
-        timeArriving = $('#form-time').val().trim();
+        var trainName = $('#form-train-name').val().trim();
+        var frequency = $('#form-frequency').val().trim();
+        var city = $('#form-city').val().trim();
+        var state = $('#form-state').val().trim();
+        var firstArrival = $('#form-time').val().trim();
 
         // Save the new train details in Firebase
-        database.ref('/trainData' + trainCount).set({
-            trainCount: trainCount,
-            trainName: trainName,
-            frequency: frequency,
-            city: city,
-            state: state,
-            timeArriving: timeArriving,
+        database.ref().push({
+            trainName,
+            frequency,
+            city,
+            state,
+            firstArrival,
         });
 
-        $('#table-schedule').append(`
-        <tr>
-            <th scope="row">${trainName}</th>
-            <td>${city}, ${state}</td>
-            <td>${frequency}</td>
-            <td>${timeArriving}</td>
-            <td>??? mins away</td>
-        </tr>
-    `)
+        // clear all input fields
+        $('#form-train-name').val('');
+        $('#form-frequency').val('');
+        $('#form-city').val('');
+        $('#form-state').val('');
+        $('#form-time').val('');
 
     });
 
