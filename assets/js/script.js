@@ -13,11 +13,31 @@ $(document).ready(function () {
 
     var database = firebase.database();
 
-    // At the page load and subsequent value changes, get a snapshot of the local data.
-    // This function allows you to update your page in real-time when the values within the firebase node bidderData changes
+    // At the page load and value changes, get a snapshot of the local data.
+    // Create Firebase event for adding a train to the database
     database.ref().on("child_added", function (snapshot) {
         var data = snapshot.val();
         console.log(data);
+
+        var currentTime = moment().format("HH:mm");
+        var firstTimeConverted = moment(data.firstArrival, "HH:mm").subtract(1, "years");
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+
+        console.log('first train: ' + data.firstArrival)
+        console.log('freq: ' + data.frequency)
+        console.log("now = " + currentTime);
+        console.log("difference = " + diffTime);
+        // Time apart (remainder)
+        var tRemainder = diffTime % data.frequency;
+
+        // Minute Until Train
+        var tMinutesTillTrain = data.frequency - tRemainder;
+        console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+        // Next Train
+        var nextTrain = moment().add(tMinutesTillTrain, "minutes").format("hh:mm A");
+        console.log("ARRIVAL TIME: " + nextTrain);
+
 
         // add a new table row
         $('#table-schedule').append(`
@@ -25,11 +45,10 @@ $(document).ready(function () {
                 <th scope="row">${data.trainName}</th>
                 <td>${data.city}, ${data.state}</td>
                 <td>${data.frequency}</td>
-                <td>${data.firstArrival}</td>
-                <td>??? mins away</td>
+                <td>${nextTrain}</td>
+                <td>${tMinutesTillTrain} mins away</td>
             </tr>
         `)
-        console.log(data.trainName);
     });
 
     // Listener on form submit
