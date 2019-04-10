@@ -27,6 +27,7 @@ $(document).ready(function () {
         console.log('freq: ' + data.frequency)
         console.log("now = " + currentTime);
         console.log("difference = " + diffTime);
+
         // Time apart (remainder)
         var tRemainder = diffTime % data.frequency;
 
@@ -77,20 +78,5 @@ $(document).ready(function () {
         $('#form-city').val('');
         $('#form-state').val('');
         $('#form-time').val('');
-
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 });
